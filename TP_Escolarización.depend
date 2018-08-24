@@ -1,6 +1,0 @@
-# depslib dependency file v1.0
-1534803167 source:c:\users\alejandra\desktop\tp_escolarización\main.c
-	<stdbool.h>
-	<stdio.h>
-	<stdlib.h>
-
