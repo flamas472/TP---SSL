@@ -115,6 +115,8 @@ int menuPrincipal(){
     printf("1) Ver tabla de transiciones.\n");
     printf("2) Ejecutar reconocedorde secuencias de cadenas.\n");
     printf("\n");
+    printf("0) Salir");
+    printf("\n");
     printf("Ingrese la opcion deseada: ");
     scanf("%d", &opcion);
     return opcion;
