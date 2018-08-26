@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define TAMC 7
-#define TAMF 4
+#define TAMF 10
+#define ER_MENSAJE "Lenguaje regular: (REGEX) [01]\\.[0-9]{2}|[01]+B\tCentinela: #\n"
 /// VARIABLES GLOBALES
 char caracteres0y1[2] = {'0', '1'};
 char caracteres2a9[8] = {'2', '3', '4', '5', '6', '7', '8', '9' };
@@ -13,22 +14,31 @@ int estadoInicial[1] = {0};
 int estadoFinal[2] = {3, 6};
 /// FUNCIONES
 int menuPrincipal();
-void llenarTT(int tt[TAMF][TAMC]);
 void mostrarTT(int tt[TAMF][TAMC]);
 void reconocedorDePalabras(char lineaDeTexto[], char tt[TAMF][TAMC]);
 bool perteneceAint(int buscado, int vector[], int tam);
 bool perteneceAchar(char buscado, char vector[], int tam);
 bool esEtadoFinal(int estado){return perteneceAint(estado, estadoFinal, 2);}
 bool esEstadoInicial(int estado){return perteneceAint(estado, estadoInicial, 1);}
+void buscadorDePalabras(char s[32]);
 
 
 
 int main() {
-
+  int tt[TAMF][TAMC] =  {
+    {1, 8, 8, 8, 8, 0, 9},
+    {2, 8, 3, 4, 8, 0, 9},
+    {2, 8, 3, 8, 8, 0, 9},
+    {8, 8, 8, 8, 8, 6, 7},
+    {5, 5, 8, 8, 8, 0, 9},
+    {3, 3, 8, 8, 8, 0, 9},
+    {1, 8, 8, 8, 8, 0, 9},
+    {'-', '-', '-', '-', '-', '-', '-'},
+    {8, 8, 8, 8, 8, 0, 9},
+    {'-', '-', '-', '-', '-', '-', '-'}
+  };
   enum estado{e0, e1, e2, e3, e4, e5, e6};
   enum caracter{c01, c2_9, cB , cPunto};
-  int tablaDeTransiciones[TAMF][TAMC];
-  llenarTT(tablaDeTransiciones);
   int opcion = 0;
 
 
@@ -37,25 +47,25 @@ int main() {
     switch(opcion){
       case 0:
         system("CLS");
-        printf("HASTA LUEGO\n");
+        printf("Hasta Luego\n\n");
         system("PAUSE");
         system("CLS");
       break;
       case 1:
         system("CLS");
-        mostrarTT(tablaDeTransiciones);
+        mostrarTT(tt);
         system("PAUSE");
         system("CLS");
       break;
       case 2:
         system("CLS");
-        printf("EN DESARROLLO\n");
+        printf("EN DESARROLLO\n\n");
         system("PAUSE");
         system("CLS");
       break;
       default:
         system("CLS");
-        printf("OPCION INCONRRECTA\n");
+        printf("Opcion Incorrecta\n\n");
         system("PAUSE");
         system("CLS");
       break;
@@ -111,7 +121,7 @@ int menuPrincipal(){
   int opcion = 0;
   printf("Menu Principal\n");
   printf("\n");
-  printf("Lenguaje regular: (REGEX) [01]\\.[0-9]{2}|[01]+B\tCentinela: #\n");
+  printf(ER_MENSAJE);
   printf("\n");
   printf("1) Ver tabla de transiciones.\n");
   printf("2) Ejecutar reconocedorde secuencias de cadenas.\n");
@@ -123,55 +133,15 @@ int menuPrincipal(){
   return opcion;
 }
 
-void llenarTT(int tt[TAMF][TAMC]){
-  int vacio = '-';
-
-  //TABLA DE TRANSICIONES
-  tt[0][0] = 1;
-  tt[0][1] = vacio;
-  tt[0][2] = vacio;
-  tt[0][3] = vacio;
-  //FILA ESTADO 0-
-  tt[1][0] = 2;
-  tt[1][1] = vacio;
-  tt[1][2] = 3;
-  tt[1][3] = 4;
-  //FILA ESTADO 1
-  tt[2][0] = 2;
-  tt[2][1] = vacio;
-  tt[2][2] = 3;
-  tt[2][3] = vacio;
-  //FILA ESTADO 2
-  tt[3][0] = vacio;
-  tt[3][1] = vacio;
-  tt[3][2] = vacio;
-  tt[3][3] = vacio;
-  //FILA ESTADO 3+
-  tt[4][0] = 5;
-  tt[4][1] = 5;
-  tt[4][2] = vacio;
-  tt[4][3] = vacio;
-  //FILA ESTADO 4
-  tt[5][0] = 6;
-  tt[5][1] = 6;
-  tt[5][2] = vacio;
-  tt[5][3] = vacio;
-  //FILA ESTADO 5
-  tt[6][0] = vacio;
-  tt[6][1] = vacio;
-  tt[6][2] = vacio;
-  tt[6][3] = vacio;
-  //FILA ESTADO 6+
-}
-
 void mostrarTT(int tt[TAMF][TAMC]){
   int f, c;
-  printf("TABLA DE TRANSICIONES\n");
-  printf("\n\t\t0,1\t2-9\tB\t.\n");
-  for(f=0; f<TAMC; f++){
+  printf("Tabla de Transiciones\n\n");
+  printf(ER_MENSAJE);
+  printf("\nTT\t\t0,1\t2-9\tB\t.\totro\t#\tfdt\n");
+  for(f=0; f<TAMF; f++){
     printf("\nestado%d\t", f);
-    for(c=0; c<TAMF; c++){
-      if(tt[f][c]>6){
+    for(c=0; c<TAMC; c++){
+      if(tt[f][c]>TAMF){
         printf("\t%c", tt[f][c]);
       }else{
         printf("\t%d", tt[f][c]);
@@ -198,3 +168,6 @@ bool perteneceAchar(char buscado, char vector[], int tam){
   }
   return false;
 }
+
+//FUNCIONES DE PRUEBA
+void buscadorDePalabras(char s[32]);
