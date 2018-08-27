@@ -10,6 +10,7 @@
 #define CENTINELA '#'
 #define FDT '\0'
 #define CANTIDADEF 2 // Cantidad de estados finales
+#define ESTADOFDT 9
 
 int estadoFinal[2] = {6, 7}; // Estados finales
 int tt[TAMF][TAMC] =  { // Tabla de Transiciones
@@ -32,10 +33,8 @@ void mostrarTT();
 void reconocedorDePalabras(int contador);
 int actualizarEstado(int estado, int caracter);
 int consultarCaracter(char caracter);
-int perteneceAint(int buscado, int vector[], int tam);
-bool perteneceAchar(char buscado, char vector[], int tam);
+int hacerTransicion(int estado, char caracter);
 int esEstadoFinal(int estado);
-bool esEstadoInicial(int estado);
 void buscadorDePalabras();
 int tomarLinea(char s[], int lim);
 
@@ -87,34 +86,36 @@ void reconocedorDePalabras(int contador){
   int caracter;
 
   //ALGORITMO 3
+  if(lineaDeTexto[pos] != FDT){                                                   // Intenta leer el priner caracter del texto
 
-  while(lineaDeTexto[pos] != FDT){                                              // Mientras no sea fdt, repetir:
+    while(lineaDeTexto[pos] != FDT){                                              // Mientras no sea fdt, repetir:
 
-    estado = 0;                                                                 // (1) Estado actual del automata: estado inicial
+      estado = 0;
 
-    while((lineaDeTexto[pos] != CENTINELA) && (lineaDeTexto[pos] != FDT)){      // (2) Mientras no sea un estado final y no sea fdt
+      while(!(esEstadoFinal(estado)) && (estado != ESTADOFDT)){                   // (2) Mientras no sea un estado final y no sea el estado fdt
 
-      caracter = consultarCaracter(lineaDeTexto[pos]);
-      estado = actualizarEstado(estado, caracter);                              // (2.1) Determinar el nuevo estado actual
-      
-      cadena[posCadena] = lineaDeTexto[pos];
+        estado = hacerTransicion(estado, lineaDeTexto[pos]);                      // (2.1) Determinar el nuevo estado actual
 
-      pos++;                                                                    // (2.2) Actualizar el caracter a analizar
-      posCadena++;
+        cadena[posCadena] = lineaDeTexto[pos];
+
+        // Si se encuentra con un centinela debe reiniciarse la cadena actual
+        // si se encuentra un centinela o fdt debe cerrarse la cadena
+        if((lineaDeTexto[pos] == CENTINELA) || lineaDeTexto == FDT){
+          cadena[posCadena] = '\0';
+          posCadena = 0;
+        }else{
+          posCadena++;
+        }
+        pos++;                                                                    // (2.2) Actualizar el caracter a analizar
+      }
+
+      if (esEstadoFinal(estado)){                                                 // (3) Si el estado es final,
+        contador++;                                                               // la cadena procesada es una palabra del lenguaje;
+        printf("\t\t%d) %s\n", contador, cadena);                                 // caso contrario, no pertenece al lenguaje
+      }
     }
 
-    caracter = consultarCaracter(lineaDeTexto[pos]);
-    estado = actualizarEstado(estado, caracter);
-    cadena[posCadena] = '\0';
-    posCadena = 0;
-    pos++;
-
-    if (esEstadoFinal(estado)){                                                 // (3) Si el estado es final,
-      contador++;                                                               // la cadena procesada es una palabra del lenguaje;
-      printf("\t\t%d) %s\n", contador, cadena);                                 // caso contrario, no pertenece al lenguaje
-    }
   }
-
   // FIN DEL ALGORITMO 3
 
   printf("Lectura completada,\nPalabras encontradas: %d\n", contador);
@@ -242,4 +243,10 @@ int consultarCaracter(char caracter){ // Consulta el caracter, retorna la column
       return 4;
     break;
   }
+}
+
+int hacerTransicion(int estado, char caracter){ // Retorna el nuevo estado solicitando estado y caracter
+  int columna = consultarCaracter(caracter);
+  estado = actualizarEstado(estado, columna);
+  return estado;
 }
