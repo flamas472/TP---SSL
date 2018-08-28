@@ -142,6 +142,40 @@ void reconocedorDePalabras(int contador){
   }
 }
 
+// int algoritmo3(char lineaDeTexto[MAXLINE], int contador){                         //ALGORITMO 3
+//
+//   if(lineaDeTexto[pos] != FDT){                                                   // Intenta leer el priner caracter del texto
+//
+//     while(lineaDeTexto[pos] != FDT){                                              // Mientras no sea fdt, repetir:
+//
+//       estado = 0;
+//
+//       while(!(esEstadoFinal(estado)) && (estado != ESTADOFDT)){                   // (2) Mientras no sea un estado final y no sea el estado fdt
+//
+//         estado = hacerTransicion(estado, lineaDeTexto[pos]);                      // (2.1) Determinar el nuevo estado actual
+//
+//         cadena[posCadena] = lineaDeTexto[pos];
+//
+//         // Si se encuentra con un centinela debe reiniciarse la cadena actual
+//         // si se encuentra un centinela o fdt debe cerrarse la cadena
+//         if((lineaDeTexto[pos] == CENTINELA) || lineaDeTexto == FDT){
+//           cadena[posCadena] = '\0';
+//           posCadena = 0;
+//         }else{
+//         posCadena++;
+//         }
+//         pos++;                                                                    // (2.2) Actualizar el caracter a analizar
+//       }
+//
+//       if (esEstadoFinal(estado)){                                                 // (3) Si el estado es final,
+//         contador++;                                                               // la cadena procesada es una palabra del lenguaje;
+//         printf("\t\t%d) %s\n", contador, cadena);                                 // caso contrario, no pertenece al lenguaje
+//       }
+//     }
+//
+//   }
+// }                                                                                 // FIN DEL ALGORITMO 3
+
 int scanfIntervalo(int limInf, int limSup){
   int eleccion;
   scanf("%d", &eleccion);
