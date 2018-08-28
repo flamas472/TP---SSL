@@ -11,7 +11,7 @@
 #define FDT '\0'
 #define CANTIDADEF 2 // Cantidad de estados finales
 #define ESTADOFDT 9
-#define MAXLINE
+#define MAXLINE 100
 
 int estadoFinal[2] = {6, 7}; // Estados finales
 int tt[TAMF][TAMC] =  { // Tabla de Transiciones
@@ -80,14 +80,51 @@ int main() {
 
 void reconocedorDePalabras(int contador){
   char lineaDeTexto[100];
+  int eleccion;
+
   tomarLinea(lineaDeTexto, 100);
+
+  contador = algoritmo3(lineaDeTexto, contador);
+
+  do{
+    printf("Lectura completada,palabras encontradas: %d\n", contador);
+    printf("Desea continuar?\n");
+    printf("1) Si.\n");
+    printf("0) No.\n");
+    printf("-> ");
+    eleccion = scanfIntervalo(0, 1);
+    if(eleccion == 0){
+      printf("\nProceso de reconocimiento finalizado,\nvolvera al menu principal\n");
+    }else{
+      printf("Desea resetear el contador de palabras encontradas?\n");
+      printf("1) Si.\n");
+      printf("0) No.\n");
+      printf("->");
+      eleccion = scanfIntervalo(0, 1);
+      if(eleccion==1){
+
+        tomarLinea(lineaDeTexto, 100);
+
+        contador = algoritmo3(lineaDeTexto, 0);
+
+      }else{
+
+        tomarLinea(lineaDeTexto, 100);
+
+        contador = algoritmo3(lineaDeTexto, contador);
+
+        eleccion = 1;
+      }
+    }
+  }while(eleccion != 0);
+}
+
+int algoritmo3(char lineaDeTexto[MAXLINE], int contador){                         //ALGORITMO 3
   int pos = 0;
   char cadena[64];
   int posCadena = 0;
   int estado;
   int caracter;
-
-                                                                                  //ALGORITMO 3
   if(lineaDeTexto[pos] != FDT){                                                   // Intenta leer el priner caracter del texto
 
     while(lineaDeTexto[pos] != FDT){                                              // Mientras no sea fdt, repetir:
@@ -106,7 +143,7 @@ void reconocedorDePalabras(int contador){
           cadena[posCadena] = '\0';
           posCadena = 0;
         }else{
-          posCadena++;
+        posCadena++;
         }
         pos++;                                                                    // (2.2) Actualizar el caracter a analizar
       }
@@ -117,64 +154,9 @@ void reconocedorDePalabras(int contador){
       }
     }
 
-  }                                                                               // FIN DEL ALGORITMO 3
-
-  printf("Lectura completada,\nPalabras encontradas: %d\n", contador);
-  printf("Desea continuar?\n");
-  printf("1) Si.\n");
-  printf("0) No.\n");
-  printf("-> ");
-  int eleccion;
-  scanfIntervalo(0, 1);
-  if(eleccion == 0){
-    printf("\nProceso de reconocimiento finalizado,\nvolvera al menu principal\n");
-  }else{
-    printf("Desea resetear el contador de palabras encontradas?\n");
-    printf("1) Si.\n");
-    printf("0) No.\n");
-    printf("->");
-    scanfIntervalo(0, 1);
-    if(eleccion==1){
-      reconocedorDePalabras(0);
-    }else{
-      reconocedorDePalabras(contador);
-    }
   }
-}
-
-// int algoritmo3(char lineaDeTexto[MAXLINE], int contador){                         //ALGORITMO 3
-//
-//   if(lineaDeTexto[pos] != FDT){                                                   // Intenta leer el priner caracter del texto
-//
-//     while(lineaDeTexto[pos] != FDT){                                              // Mientras no sea fdt, repetir:
-//
-//       estado = 0;
-//
-//       while(!(esEstadoFinal(estado)) && (estado != ESTADOFDT)){                   // (2) Mientras no sea un estado final y no sea el estado fdt
-//
-//         estado = hacerTransicion(estado, lineaDeTexto[pos]);                      // (2.1) Determinar el nuevo estado actual
-//
-//         cadena[posCadena] = lineaDeTexto[pos];
-//
-//         // Si se encuentra con un centinela debe reiniciarse la cadena actual
-//         // si se encuentra un centinela o fdt debe cerrarse la cadena
-//         if((lineaDeTexto[pos] == CENTINELA) || lineaDeTexto == FDT){
-//           cadena[posCadena] = '\0';
-//           posCadena = 0;
-//         }else{
-//         posCadena++;
-//         }
-//         pos++;                                                                    // (2.2) Actualizar el caracter a analizar
-//       }
-//
-//       if (esEstadoFinal(estado)){                                                 // (3) Si el estado es final,
-//         contador++;                                                               // la cadena procesada es una palabra del lenguaje;
-//         printf("\t\t%d) %s\n", contador, cadena);                                 // caso contrario, no pertenece al lenguaje
-//       }
-//     }
-//
-//   }
-// }                                                                                 // FIN DEL ALGORITMO 3
+  return contador;
+}                                                                                 // FIN DEL ALGORITMO 3
 
 int scanfIntervalo(int limInf, int limSup){
   int eleccion;
