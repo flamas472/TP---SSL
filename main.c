@@ -11,6 +11,7 @@
 #define FDT '\0'
 #define CANTIDADEF 2 // Cantidad de estados finales
 #define ESTADOFDT 9
+#define MAXLINE
 
 int estadoFinal[2] = {6, 7}; // Estados finales
 int tt[TAMF][TAMC] =  { // Tabla de Transiciones
@@ -35,8 +36,9 @@ int actualizarEstado(int estado, int caracter);
 int consultarCaracter(char caracter);
 int hacerTransicion(int estado, char caracter);
 int esEstadoFinal(int estado);
-void buscadorDePalabras();
 int tomarLinea(char s[], int lim);
+int scanfIntervalo(int limInf, int limSup);
+int algoritmo3(char lineaDeTexto[MAXLINE], int contador);
 
 
 int main() {
@@ -85,7 +87,7 @@ void reconocedorDePalabras(int contador){
   int estado;
   int caracter;
 
-  //ALGORITMO 3
+                                                                                  //ALGORITMO 3
   if(lineaDeTexto[pos] != FDT){                                                   // Intenta leer el priner caracter del texto
 
     while(lineaDeTexto[pos] != FDT){                                              // Mientras no sea fdt, repetir:
@@ -115,21 +117,15 @@ void reconocedorDePalabras(int contador){
       }
     }
 
-  }
-  // FIN DEL ALGORITMO 3
+  }                                                                               // FIN DEL ALGORITMO 3
 
   printf("Lectura completada,\nPalabras encontradas: %d\n", contador);
   printf("Desea continuar?\n");
   printf("1) Si.\n");
   printf("0) No.\n");
-  printf("->");
+  printf("-> ");
   int eleccion;
-  scanf("%d", &eleccion);
-  while(eleccion>1 || eleccion<0){
-    printf("Opcion incorrecta.\n");
-    printf("->");
-    scanf("%d", &eleccion);
-  }
+  scanfIntervalo(0, 1);
   if(eleccion == 0){
     printf("\nProceso de reconocimiento finalizado,\nvolvera al menu principal\n");
   }else{
@@ -137,18 +133,24 @@ void reconocedorDePalabras(int contador){
     printf("1) Si.\n");
     printf("0) No.\n");
     printf("->");
-    scanf("%d", &eleccion);
-    while(eleccion>1 || eleccion<0){
-      printf("Opcion incorrecta.\n");
-      printf("->");
-      scanf("%d", &eleccion);
-    }
+    scanfIntervalo(0, 1);
     if(eleccion==1){
       reconocedorDePalabras(0);
     }else{
       reconocedorDePalabras(contador);
     }
   }
+}
+
+int scanfIntervalo(int limInf, int limSup){
+  int eleccion;
+  scanf("%d", &eleccion);
+  while(eleccion<limInf || eleccion>limSup){
+    printf("Opcion incorrecta\n");
+    printf("-> ");
+    scanf("%d", &eleccion);
+  }
+  return eleccion;
 }
 
 int menuPrincipal(){
@@ -207,7 +209,7 @@ int tomarLinea(char s[], int lim){ // Solicita una cadena por entrada en consola
   int longitud;
   char str[lim];
   printf("Ingrese una cadena:\n");
-  printf("->");
+  printf("-> ");
   scanf("%s", &str);
   longitud = copiar(s, str);
   return longitud;
