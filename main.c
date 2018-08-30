@@ -184,7 +184,7 @@ int menuPrincipal(){
   return opcion;
 }
 
-void mostrarTT(/*int tt[TAMF][TAMC]*/){ // Muestra la tabla de transiciones
+void mostrarTT(){ // Muestra la tabla de transiciones
   int f, c;
   printf("Tabla de Transiciones\n\n");
   printf(ER_MENSAJE);
