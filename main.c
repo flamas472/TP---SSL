@@ -4,16 +4,16 @@
 
 // VARIABLES GLOBALES Y CONSTANTES SIMBOLICAS
 
-#define TAMC 7
-#define TAMF 10
-#define ER_MENSAJE "Lenguaje regular: (REGEX) [01]\\.[0-9]{2}|[01]+B\tCentinela: #\n"
-#define CENTINELA '#'
-#define FDT '\0'
+#define TAMC 7 // Cantidad de columnas - grupos de caracteres
+#define TAMF 10 // Cantidad de filas - estados
+#define ER_MENSAJE "Lenguaje regular: (REGEX) [01]\\.[0-9]{2}|[01]+B\tCentinela: #\n" //mensaje con MetaLenguaje y Centinela
+#define CENTINELA '#' // Caracter Centinela
+#define FDT '\0' // Caracter FDT
 #define CANTIDADEF 2 // Cantidad de estados finales
-#define ESTADOFDT 9
-#define MAXLINE 100
+#define ESTADOFDT 9 // Estado final de texto
+#define MAXLINE 100 // Máxima cantidad de caracteres para la entrada
 
-int estadoFinal[2] = {6, 7}; // Estados finales
+int estadoFinal[2] = {6, 7}; // Estados finales (de aceptacion)
 int tt[TAMF][TAMC] =  { // Tabla de Transiciones
   {1, 8, 8, 8, 8, 0, 9},
   {2, 8, 3, 4, 8, 0, 9},
@@ -27,7 +27,7 @@ int tt[TAMF][TAMC] =  { // Tabla de Transiciones
   {'-', '-', '-', '-', '-', '-', '-'}
 };
 
-// FUNCIONES
+// Declaración de funciones
 
 void ejecutar (int eleccion); // Ejecuta la funcion deseada segun parámetro
 int menuPrincipal(); // Imprime el menu principal y retorna la poción ingresada por consola
@@ -41,6 +41,8 @@ int consultarCaracter(char caracter); // Recibe un caracter, y retorna el valor 
 int actualizarEstado(int estado, int caracter); // Recibe un Estado y el valor de la columna correspondiente al caracter y retorna el siguiente estado
 int esEstadoFinal(int estado); // consulta si el estado recibido por parámetro es un estado final, de aceptación
 
+// Definición de funciones
+
 int main() {
 
   ejecutar(menuPrincipal());
@@ -48,7 +50,7 @@ int main() {
   return 0;
 }
 
-void ejecutar (int eleccion){ // Ejecuta la funcion deseada segun parámetro
+void ejecutar(int eleccion){ // Ejecuta la funcion deseada segun parámetro
   switch(eleccion){
     case 0:
       system("CLS");
@@ -172,11 +174,11 @@ int algoritmo3(char lineaDeTexto[MAXLINE], int contador){                       
   int posCadena = 0;
   int estado;
   int caracter;
-  if(lineaDeTexto[pos] != FDT){                                                   // Intenta leer el priner caracter del texto
+  if(lineaDeTexto[pos] != FDT){                                                   // - Intenta leer el priner caracter del texto
 
-    while(lineaDeTexto[pos] != FDT){                                              // Mientras no sea fdt, repetir:
+    while(lineaDeTexto[pos] != FDT){                                              // - Mientras no sea fdt, repetir:
 
-      estado = 0;
+      estado = 0;                                                                 // (1) Estado actual del autómata: estado inicial
 
       while(!(esEstadoFinal(estado)) && (estado != ESTADOFDT)){                   // (2) Mientras no sea un estado final y no sea el estado fdt
 
@@ -196,8 +198,8 @@ int algoritmo3(char lineaDeTexto[MAXLINE], int contador){                       
       }
 
       if (esEstadoFinal(estado)){                                                 // (3) Si el estado es final,
-        contador++;                                                               // la cadena procesada es una palabra del lenguaje;
-        printf("\t\t%d) %s\n", contador, cadena);                                 // caso contrario, no pertenece al lenguaje
+        contador++;                                                               //     la cadena procesada es una palabra del lenguaje;
+        printf("\t\t%d) %s\n", contador, cadena);                                 //     caso contrario, no pertenece al lenguaje
       }
     }
 
