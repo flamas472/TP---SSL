@@ -29,6 +29,7 @@ int tt[TAMF][TAMC] =  { // Tabla de Transiciones
 
 // FUNCIONES
 
+void ejecutar (int eleccion); // Ejecuta la funcion deseada segun parámetro
 int menuPrincipal(); // Imprime el menu principal y retorna la poción ingresada por consola
 void mostrarTT(); // Imprime por consola la TT
 void reconocedorDePalabras(int contador); // corre un reconocedor que aplica el algoritmo3 mientras el usuario lo desee
@@ -40,46 +41,38 @@ int consultarCaracter(char caracter); // Recibe un caracter, y retorna el valor 
 int actualizarEstado(int estado, int caracter); // Recibe un Estado y el valor de la columna correspondiente al caracter y retorna el siguiente estado
 int esEstadoFinal(int estado); // consulta si el estado recibido por parámetro es un estado final, de aceptación
 
-
 int main() {
 
-  int opcion = 0;
-
-  do{
-    opcion = menuPrincipal();
-    switch(opcion){
-      case 0:
-        system("CLS");
-        printf("Hasta Luego\n\n");
-        system("PAUSE");
-        system("CLS");
-      break;
-      case 1:
-        system("CLS");
-        mostrarTT(tt);
-        system("PAUSE");
-        system("CLS");
-      break;
-      case 2:
-        system("CLS");
-        reconocedorDePalabras(0);
-        system("PAUSE");
-        system("CLS");
-      break;
-      default:
-        system("CLS");
-        printf("Opcion Incorrecta\n\n");
-        system("PAUSE");
-        system("CLS");
-      break;
-    }
-  }while(opcion);
+  ejecutar(menuPrincipal());
 
   return 0;
 }
 
+void ejecutar (int eleccion){ // Ejecuta la funcion deseada segun parámetro
+  switch(eleccion){
+    case 0:
+      system("CLS");
+      printf("Hasta Luego\n\n");
+    break;
+    case 1:
+      system("CLS");
+      mostrarTT(tt);
+    break;
+    case 2:
+      system("CLS");
+      reconocedorDePalabras(0);
+    break;
+    default:
+      system("CLS");
+      printf("Opcion Incorrecta\n\n");
+    break;
+  }
+
+}
+
 int menuPrincipal(){ // Imprime el menu principal y retorna la poción ingresada por consola
   int opcion = 0;
+  system("CLS");
   printf("Menu Principal\n");
   printf("\n");
   printf(ER_MENSAJE);
@@ -89,7 +82,7 @@ int menuPrincipal(){ // Imprime el menu principal y retorna la poción ingresada
   printf("0) Salir");
   printf("\n");
   printf("-> ");
-  scanf("%d", &opcion);
+  opcion = scanfIntervalo(0, 2);
   return opcion;
 }
 
@@ -109,6 +102,8 @@ void mostrarTT(){ // Muestra la tabla de transiciones
     }
   }
   printf("\n\n");
+  system("PAUSE");
+  ejecutar(menuPrincipal());
 }
 
 void reconocedorDePalabras(int contador){ // corre un reconocedor que aplica el algoritmo3 mientras el usuario lo desee
@@ -127,7 +122,9 @@ void reconocedorDePalabras(int contador){ // corre un reconocedor que aplica el 
     printf("-> ");
     eleccion = scanfIntervalo(0, 1);
     if(eleccion == 0){
-      printf("\nProceso de reconocimiento finalizado,\nvolvera al menu principal\n");
+      printf("\nProceso de reconocimiento finalizado,\nvolvera al menu principal\n\n");
+      system("PAUSE");
+      ejecutar(menuPrincipal());
     }else{
       printf("Desea resetear el contador de palabras encontradas?\n");
       printf("1) Si.\n");
